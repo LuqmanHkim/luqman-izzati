@@ -332,7 +332,6 @@ const CONFIG = {
     "gallerySwipe": "GESER UNTUK MENYELUSURI",
     "preparing": "Menyediakan helaian kasih…",
     "heroNote": "Dua hati, satu taman.",
-    "platePrefix": "PLATE Nº",
     "journalNumber": "HERBARIUM / VOL. 01",
     "pressedNote": "SEHELAI DOA YANG DIABADIKAN",
     "dragDismiss": "Tarik untuk menutup",
@@ -397,23 +396,15 @@ const CONFIG = {
   ],
   "specimens": [
     {
-      "latin": "Rosa damascena",
-      "name": "Mawar",
       "note": "Kasih yang tetap mekar."
     },
     {
-      "latin": "Jasminum sambac",
-      "name": "Melur",
       "note": "Suci dalam sebuah janji."
     },
     {
-      "latin": "Mimusops elengi",
-      "name": "Bunga tanjung",
       "note": "Harum sebuah kenangan."
     },
     {
-      "latin": "Gypsophila",
-      "name": "Baby’s breath",
       "note": "Kecil, namun abadi."
     }
   ],
@@ -460,8 +451,8 @@ const readStore=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(stor
 const writeStore=(key,value)=>{try{localStorage.setItem(storageKey+key,JSON.stringify(value))}catch{}};
 const icon=name=>`<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const plant=(kind='rose',cls='')=>`<svg class="botanical ${cls}" viewBox="0 0 200 400" aria-hidden="true"><use href="#${kind}-plant"/></svg>`;
-const specimen=(i,note='')=>`<span class="specimen"><b>${e(CONFIG.specimens[i].latin)}</b><em>${e(note||CONFIG.specimens[i].note)}</em></span>`;
-const header=i=>`<header class="plate-head"><p class="caps">${e(C.platePrefix)} ${String(i+1).padStart(2,'0')} — ${e(CONFIG.plates[i].title)}</p><span>${e(CONFIG.plates[i].note)}</span></header>`;
+const specimen=(i,note='')=>`<span class="specimen"><em>${e(note||CONFIG.specimens[i].note)}</em></span>`;
+const header=i=>`<header class="plate-head"><p class="caps">${e(CONFIG.plates[i].title)}</p><span>${e(CONFIG.plates[i].note)}</span></header>`;
 const img=(src,alt,w=600,h=800)=>`<img data-src="${e(safeUrl(src))}" alt="${e(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async">`;
 const title=(a,b)=>`<h2 class="plate-title">${e(a)}<em>${e(b)}</em></h2>`;
 const haptic=()=>{if(!motionReduced.matches)navigator.vibrate?.(8)};
@@ -470,7 +461,7 @@ document.documentElement.dataset.theme=CONFIG.theme;
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 window.scrollTo({top:0,behavior:'instant'});
 const guest=(new URLSearchParams(location.search).get('to')||C.guestFallback).slice(0,120);
-$('#cover-title').textContent=C.platePrefix+' 01 — '+C.brand;
+$('#cover-title').textContent=C.brand;
 $('#cover-edition').textContent=C.folio+' · '+CONFIG.displayDate;
 $('#guest').innerHTML=`${e(C.guestPrefix)}<strong>${e(guest)}</strong>`;
 $('#open-bud').ariaLabel=C.openHint;$('#cover-hint').textContent=C.preparing;$('#cover-note').textContent=C.openingWhisper;$('#skip').textContent=C.skip;
@@ -478,7 +469,7 @@ $('#main').innerHTML=`
 <section class="hero" id="utama" data-section><div class="hero-top"><strong>${e(C.brand)}</strong><p class="caps">${e(C.folio)}<br>${e(C.journalNumber)}</p></div><span class="folio-edge caps">${e(CONFIG.eventType)} · ${e(pair)} · ${e(CONFIG.displayDate)}</span><div class="hero-grid"><div class="hero-number" aria-hidden="true">${e(CONFIG.dateDay)}</div><div><p class="hero-kicker caps">${e(CONFIG.eventType)}<br>${e(C.heroKicker)}</p><h1 class="hero-title" aria-label="${e(pair)}"><svg viewBox="0 0 750 420" aria-hidden="true"><defs><mask id="name-mask"><rect class="ink-reveal" width="750" height="420" fill="white"/></mask><mask id="foil-mask"><rect class="foil-wipe" x="0" y="0" width="55" height="420" fill="white" transform="rotate(-12)"/></mask></defs><g mask="url(#name-mask)"><text x="12" y="144" font-size="174">${e(CONFIG.groom.short)}</text><text class="amp" x="290" y="193">&amp;</text><text x="205" y="330" font-size="178">${e(CONFIG.bride.short)}</text></g><g mask="url(#foil-mask)"><text class="foil-text" x="12" y="144" font-size="174">${e(CONFIG.groom.short)}</text><text class="foil-text" x="205" y="330" font-size="178">${e(CONFIG.bride.short)}</text></g></svg></h1><p class="hero-quote">${e(C.heroQuote)}</p><div class="hero-date">${e(CONFIG.displayDate)}<span class="caps">${e(CONFIG.venueName)} · ${e(CONFIG.venueCity)}</span></div><a class="scroll-note caps" href="#bismillah">${e(C.scroll)}</a></div><div class="hero-specimen">${plant('rose','hero-plant')}${specimen(0,C.heroNote)}</div><div class="hero-front"><svg viewBox="0 0 130 140" aria-hidden="true"><use href="#rose-head"/></svg></div></div><svg class="botanical corner-vine" viewBox="0 0 200 400" aria-hidden="true"><use href="#vine"/></svg></section>
 <section class="plate" id="bismillah" data-section>${header(0)}<div class="spread"><div class="intro-arch bloom-reveal reveal">${plant('rose','scroll-vine')}${plant('melur','right scroll-vine')}<div class="arabic-panel"><p class="caps">${e(C.prayerLabel)}</p><p class="bismillah" lang="ar" dir="rtl">${e(C.bismillah)}</p><p class="italic">${e(C.heroQuote)}</p></div></div><div><h2 class="reveal">${e(C.prayerTitle)}</h2><p class="arabic-verse reveal" lang="ar" dir="rtl">${e(C.verse)}</p><p class="verse-translation reveal">${e(C.translation)}</p><p class="citation caps reveal">${e(C.verseCitation)}</p></div></div></section>
 <section class="plate alt" id="jemputan" data-section>${header(1)}<div class="spread"><article class="letter reveal"><p class="dropcap">${e(C.invitationOpening)}</p><div class="hosts">${CONFIG.hosts.map(x=>`<span>${e(x)}</span>`).join('<i>&</i>')}</div><p>${e(C.invitation)}</p><div class="formal-names"><p class="formal-name">${e(CONFIG.groom.full)}</p><p class="join">${e(C.parentsJoin)}</p><p class="formal-name">${e(CONFIG.bride.full)}</p></div><p class="muted italic">${e(C.invitationEnd)}</p>${plant('rose','letter-rose')}</article><aside class="letter-note reveal">${plant('melur')}${specimen(1,C.invitationFootnote)}</aside></div></section>
-<section class="plate" id="pasangan" data-section>${header(2)}<div class="couple-grid"><svg class="heart-vines reveal" viewBox="0 0 150 210" aria-hidden="true"><path d="M15 205Q45 158 70 123C30 104 9 70 30 52Q61 31 75 63Q88 31 119 50C153 76 113 110 75 127Q109 170 140 205" fill="none" stroke="currentColor" stroke-width="1.1"/><use href="#leaf" x="21" y="123" width="36" height="36"/><use href="#leaf" x="88" y="134" width="36" height="36" transform="rotate(170 106 152)"/></svg>${[CONFIG.groom,CONFIG.bride].map((p,i)=>`<article class="person"><div class="portrait-wrap bloom-reveal reveal"><figure class="portrait">${img(CONFIG.portraits[i],p.full,500,700)}</figure>${plant(i?'melur':'rose','portrait-plant scroll-vine')}</div><p class="script reveal">${e(p.short)}</p><div class="reveal">${specimen(i,p.full+' — '+CONFIG.specimens[i].name)}</div></article>`).join('')}</div></section>
+<section class="plate" id="pasangan" data-section>${header(2)}<div class="couple-grid"><svg class="heart-vines reveal" viewBox="0 0 150 210" aria-hidden="true"><path d="M15 205Q45 158 70 123C30 104 9 70 30 52Q61 31 75 63Q88 31 119 50C153 76 113 110 75 127Q109 170 140 205" fill="none" stroke="currentColor" stroke-width="1.1"/><use href="#leaf" x="21" y="123" width="36" height="36"/><use href="#leaf" x="88" y="134" width="36" height="36" transform="rotate(170 106 152)"/></svg>${[CONFIG.groom,CONFIG.bride].map((p,i)=>`<article class="person"><div class="portrait-wrap bloom-reveal reveal"><figure class="portrait">${img(CONFIG.portraits[i],p.full,500,700)}</figure>${plant(i?'melur':'rose','portrait-plant scroll-vine')}</div><p class="script reveal">${e(p.short)}</p><div class="reveal">${specimen(i,p.full)}</div></article>`).join('')}</div></section>
 <section class="plate" id="detik" data-section>${header(3)}<div class="count-layout"><div class="reveal">${title(C.countdownTitle,C.heroNote)}<div class="countdown" id="countdown" role="timer" aria-label="${e(C.countdownTitle)}">${C.countdown.map((unit,i)=>`<div class="count-cell"><div class="count-digits" data-count="${i}"><span class="digit done"><span class="new">0</span></span><span class="digit done"><span class="new">0</span></span></div><p class="caps">${e(unit)}</p></div>`).join('')}</div><p class="count-note" id="count-note">${e(C.bloomNote)}</p></div><div class="count-rose reveal"><svg class="botanical" viewBox="0 0 200 400" aria-hidden="true"><path d="M100 390Q115 255 100 138" fill="none" stroke="var(--leaf-dark)" stroke-width="1.6"/><use href="#leaf" x="29" y="230" width="85" height="70" transform="rotate(-100 70 265)"/><use href="#leaf" x="101" y="167" width="75" height="65"/><g class="progress-flower" id="progress-flower"><use href="#rose-head" x="30" y="20" width="145" height="156"/></g></svg>${specimen(0,C.counterNote)}</div></div></section>
 <section class="plate" id="majlis" data-section>${header(4)}<div class="event-layout"><div class="event-card reveal"><p class="event-number" aria-hidden="true">${e(CONFIG.dateDay)}</p>${plant('rose','event-botanical')}<div class="date-block"><h3>${e(CONFIG.displayDate)}</h3><p>${e(CONFIG.displayHijri)}</p><p>${e(CONFIG.displayTime)}</p></div><div class="specimen venue-label"><b>${e(CONFIG.venueName)}</b><em>${e(CONFIG.venueAddress)}</em></div><div class="actions"><button class="button" id="save-calendar">${e(C.calendar)} ${icon('date')}</button><a class="button" id="google-calendar" target="_blank" rel="noopener">${e(C.googleCalendar)}</a></div></div><div><h2 class="reveal">${e(C.scheduleTitle)}</h2><ol class="itinerary">${CONFIG.schedule.map(s=>`<li class="timeline-step"><svg class="bud-dot" viewBox="0 0 130 140" aria-hidden="true"><use href="#rose-head"/></svg><time>${e(s.time)}</time><h3>${e(s.title)}</h3><p>${e(s.note)}</p></li>`).join('')}</ol><div class="dress reveal"><span class="swatches">${CONFIG.dressSwatches.filter(v=>/^#[a-f\d]{3,8}$/i.test(v)).map(v=>`<i style="background-color:${v}"></i>`).join('')}</span>${e(CONFIG.dressCode)}</div></div></div><div class="map-panel reveal" id="lokasi"><h3>${e(C.locationTitle)}</h3><p class="muted">${e(CONFIG.venueAddress)}</p><div class="actions"><a class="button fill" href="${e(safeUrl(CONFIG.googleMapsUrl))}" target="_blank" rel="noopener">${e(C.maps)} ${icon('pin')}</a><a class="button" href="${e(safeUrl(CONFIG.wazeUrl))}" target="_blank" rel="noopener">${e(C.waze)}</a></div><button class="button" id="map-toggle" aria-expanded="false">${e(C.mapShow)}</button><div id="map-slot" hidden></div></div></section>
 <section class="plate gallery-plate" id="galeri" data-section>${header(5)}<div class="reveal">${title(C.galleryTitle,C.galleryScroll)}</div><div class="gallery-scroll" id="gallery-scroll"><div class="gallery-sticky"><div class="gallery-track" id="gallery-track">${CONFIG.gallery.map((url,i)=>`<figure class="polaroid ${(Number(CONFIG.galleryAspects?.[i])||.75)>1?'landscape':''}" style="--photo-ratio:${Number(CONFIG.galleryAspects?.[i])||.75}"><button data-photo="${i}" aria-label="${e(C.galleryAlt)} ${i+1}">${img(CONFIG.galleryThumbnails?.[i]||url,CONFIG.galleryAlts?.[i]||C.galleryAlt+' '+(i+1),(CONFIG.galleryAspects?.[i]||.75)>1?960:640,(CONFIG.galleryAspects?.[i]||.75)>1?640:960)}</button><figcaption>${e(CONFIG.galleryCaptions[i%CONFIG.galleryCaptions.length])} <small>— ${String(i+1).padStart(2,'0')}</small></figcaption>${plant(i%2?'melur':'rose','pressed-flower')}</figure>`).join('')}</div></div></div><p class="gallery-hint caps"><span>${e(C.galleryHint)}</span><span>${e(C.gallerySwipe)} →</span></p><aside class="gallery-specimen reveal">${specimen(3)}</aside></section>
